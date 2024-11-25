@@ -31,6 +31,16 @@ class CustomerProfile:
     def set_email(self, email):
         self.email = email
 
+    def update_profile(self, **kwargs):
+        if "name" in kwargs:
+            self.name = kwargs["name"]
+        if "address" in kwargs:
+            self.address = kwargs["address"]
+        if "phone_number" in kwargs:
+            self.phone_number = kwargs["phone_number"]
+        if "email" in kwargs:
+            self.email = kwargs["email"]
+        
     @staticmethod
     def from_dict(customer_profile):
         return CustomerProfile(
