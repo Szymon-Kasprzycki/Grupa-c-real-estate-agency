@@ -22,7 +22,7 @@ class Property(models.Model):
     garage = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     sqft = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     lot_size = models.DecimalField(max_digits=5, decimal_places=2)
-    photo_main = models.ImageField(upload_to='photos/%Y/%m/%d/', null=True, blank=True)
+    photo_main = models.URLField()
 
     def __str__(self):
         return self.name
@@ -45,7 +45,7 @@ class Property(models.Model):
 
 class PropertyImage(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='photos/%Y/%m/%d/')
+    photo = models.URLField()
 
     def __str__(self):
         return self.property.name

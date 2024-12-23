@@ -42,5 +42,41 @@ Body structure:
 }
 ```
 
-Success response: 201 Created
+Sample request:
+```
+POST /properties/create
+Content-Type: application/json
+{
+    "name": "Beautiful house in the countryside",
+    "description": "A beautiful house in the countryside with a large garden and a swimming pool.",
+    "type": "House",
+    "city": "Countryside",
+    "country": "USA",
+    "owner": 
+        {
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "phone": "+1234567890",
+            "notes": "Owner is willing to negotiate the price."
+        },
+    "price": 500000.00,
+    "image": "https://example.com/house.jpg"
+}
+```
+Sample success response:
+```
+201 Created
+{
+    "message": "Success",
+    "property": 1,
+    "photo": 12
+}
+```
 
+Error response: 
+```
+400 Bad Request
+{
+    "message": "Bad request",
+}
+```
