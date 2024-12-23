@@ -10,6 +10,7 @@ class Property(models.Model):
         ('Apartment', 'Apartment'),
         ('Studio', 'Studio')
     )
+    owner = models.JSONField()
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=5000)
     type = models.CharField(choices=TYPES, max_length=100)
@@ -23,13 +24,20 @@ class Property(models.Model):
     lot_size = models.DecimalField(max_digits=5, decimal_places=2)
     photo_main = models.ImageField(upload_to='photos/%Y/%m/%d/', null=True, blank=True)
 
-    owner = models.ForeignKey('PropertyOwner', on_delete=models.DO_NOTHING)
-
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('property', kwargs={'pk': self.pk})
+
+    def get_contact_info(self):
+        return f"{self.owner['first_name']} {self.owner['last_name']} - {self.owner['email']}"
+
+    def get_phone_number(self):
+        return self.owner['phone']
+
+    def get_address(self):
+        return f"{self.city}, {self.country}"
 
     class Meta:
         ordering = ['price']
@@ -45,17 +53,3 @@ class PropertyImage(models.Model):
     class Meta:
         verbose_name = 'Property Image'
         verbose_name_plural = 'Property Images'
-
-
-class PropertyOwner(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    notes = models.TextField(max_length=5000)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Property Owner'
-        verbose_name_plural = 'Property Owners'
