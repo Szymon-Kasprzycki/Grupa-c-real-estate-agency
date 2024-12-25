@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
+from .models import Customer
 
 # Create your views here.
 def home(request):
@@ -26,7 +27,6 @@ def login_page(request):
             login(request, user)
             return redirect('/home/')
     
-    # Render the login page template (GET request)
     return render(request, 'login.html')
 
 def register_page(request):
@@ -37,6 +37,7 @@ def register_page(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
         
         user = User.objects.filter(username=username)
         
@@ -44,15 +45,19 @@ def register_page(request):
             messages.info(request, "Username already in use.")
             return redirect('/register/')
         
-        user = User.objects.create_user(
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            email=email
-        )
-        
+        user = User.objects.create_user(username=username)
         user.set_password(password)
         user.save()
+
+        customer = Customer.objects.create(
+            user=user, 
+            first_name=first_name, 
+            last_name=last_name, 
+            email=email,
+            phone_number=phone_number
+            )
+        
+        customer.save()
 
         messages.info(request, "Account created Successfully.")
         return redirect('/register/')
