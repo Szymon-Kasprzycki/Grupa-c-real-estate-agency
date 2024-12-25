@@ -5,9 +5,9 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
 from .models import Customer
 
-# Create your views here.
+
 def home(request):
-    return render(request, 'home.html') # we will create this file 
+    return render(request, 'home.html')
 
 def login_page(request):
     if request.method == "POST":
@@ -16,16 +16,16 @@ def login_page(request):
         
         if not User.objects.filter(username=username).exists():
             messages.error(request, 'Invalid Username')
-            return redirect('/login/')
+            return redirect('login/')
         
         user = authenticate(username=username, password=password)
         
         if user is None:
             messages.error(request, "Invalid Password")
-            return redirect('/login/')
+            return redirect('login/')
         else:
             login(request, user)
-            return redirect('/home/')
+            return redirect('home/')
     
     return render(request, 'login.html')
 
@@ -43,7 +43,7 @@ def register_page(request):
         
         if user.exists():
             messages.info(request, "Username already in use.")
-            return redirect('/register/')
+            return redirect('register/')
         
         user = User.objects.create_user(username=username)
         user.set_password(password)
@@ -56,10 +56,8 @@ def register_page(request):
             email=email,
             phone_number=phone_number
             )
-        
-        customer.save()
 
         messages.info(request, "Account created Successfully.")
-        return redirect('/register/')
+        return redirect('register/')
     
     return render(request, 'register.html')
