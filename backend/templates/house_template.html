@@ -1,0 +1,16 @@
+{% extends 'base_property_form.html' %}
+
+{% block additional_fields %}
+    <label for="bedrooms">Bedrooms:</label>
+    <input type="number" id="bedrooms" name="bedrooms" min="0" placeholder="Enter number of bedrooms" required><br>
+    
+    <label for="bathrooms">Bathrooms:</label>
+    <input type="number" id="bathrooms" name="bathrooms" min="0" placeholder="Enter number of bathrooms" required><br>
+    
+    <label for="garage">Garage Spaces:</label>
+    <input type="number" id="garage" name="garage" min="0" placeholder="Enter number of garage spaces"><br>
+    
+    <label for="lot_size">Lot Size (acres):</label>
+    <input type="number" id="lot_size" name="lot_size" step="0.01" placeholder="Enter lot size" required><br>
+
+{% endblock %}
