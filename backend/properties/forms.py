@@ -6,9 +6,8 @@ class PropertyForm(ModelForm):
     class Meta:
         model = Property
         fields = '__all__'
-
-
+        
 class PropertyImageForm(ModelForm):
     class Meta:
         model = PropertyImage
-        fields = '__all__'
+        exclude = ['property']

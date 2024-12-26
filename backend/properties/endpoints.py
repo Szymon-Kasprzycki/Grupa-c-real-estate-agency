@@ -13,9 +13,7 @@ def create_property(request):
             image = image_form.save(commit=False)
             image.property = property_obj
             image.save()
-            property_type = property_obj.type.lower()
-            template_name = f'{property_type}_template.html'
-            return render(request, template_name, {'property': property_obj})
+            return HttpResponse(status=201, content=dict(message='success', property=property_obj.id, image=image.id))
         else:
             return HttpResponse(status=400, content=dict(message='error', errors=[*property_form.errors, *image_form.errors]))
     else:
