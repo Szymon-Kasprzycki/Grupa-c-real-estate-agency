@@ -18,7 +18,7 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=9,
                                     validators=[MinLengthValidator(9), 
                                                 MaxLengthValidator(9),
-                                                RegexValidator(regex='^\d{9}$', message='Phone number must be 9 digits long and contain only numbers.')],
+                                                RegexValidator(regex=r'^\d{9}$', message='Phone number must be 9 digits long and contain only numbers.')],
                                     blank=True,
                                     unique=True)
     address = models.CharField(max_length=1000, blank=True)
