@@ -44,13 +44,11 @@ def check_dependencies():
     # silently check if pip is installed (without printing to console)
     if 'could not find' in check_output([PYTHON_PATH, '-m', 'pip', '--no-cache-dir', '--no-python-version-warning', '--disable-pip-version-check']).decode('utf-8').lower():
         raise Exception('Python pip module not found!')
-
-    # check if virtualenv is installed
-    if 'virtualenv' not in check_output([PYTHON_PATH, '-m', 'pip', 'list']).decode('utf-8').lower():
-        raise Exception('Virtualenv package not found!')
+    print('Python and pip found!')
 
 
 def prepare_venv():
+    call([PYTHON_PATH, '-m', 'pip', 'install', 'virtualenv'])
     call([PYTHON_PATH, '-m', 'venv', '/'.join(list(VENV_PATH.split('/'))[:-1])])
     call([f'{VENV_PATH}/pip', 'install', '-r', 'backend/requirements.dev.txt'])
     print('Virtual environment created and dependencies installed!')
