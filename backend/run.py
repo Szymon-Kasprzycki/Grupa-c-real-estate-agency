@@ -50,7 +50,7 @@ def check_dependencies():
 
 
 def prepare_venv():
-    call([PYTHON_PATH, '-m', 'venv', VENV_PATH])
+    call([PYTHON_PATH, '-m', 'venv', VENV_PATH.split('/')[0]])
     call([f'{VENV_PATH}/pip', 'install', '-r', 'requirements.dev.txt'])
     print('Virtual environment created and dependencies installed!')
 
