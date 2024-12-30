@@ -15,7 +15,7 @@ else:
 
 def main():
     parser = ArgumentParser(description='Please make sure to have python and virtualenv installed!')
-    parser.add_argument('-i', '--install', action='store_true', help='Install dependencies')
+    parser.add_argument('-s', '--setup', action='store_true', help='Setup clean project')
     parser.add_argument('-r', '--run', action='store_true', help='Run the server')
     parser.add_argument('-d', '--rerun-db', action='store_true', help='Recreate the database')
     args = parser.parse_args()
@@ -23,11 +23,12 @@ def main():
     check_dependencies()
     print(f'Using python from {PYTHON_PATH}')
 
-    if args.install:
+    if args.setup:
         if not os.path.exists(VENV_PATH):
             prepare_venv()
         else:
             raise Exception('Virtual environment already exists!')
+        rerun_db()
     elif args.run:
         if os.path.exists(VENV_PATH):
             call([f'{VENV_PATH}/python', 'manage.py', 'runserver'])
