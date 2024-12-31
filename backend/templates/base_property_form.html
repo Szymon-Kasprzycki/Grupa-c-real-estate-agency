@@ -2,8 +2,14 @@
     {% csrf_token %}
     <h2>Add new property listing</h2>
 
-    <input type="hidden" name="owner" 
-           value='{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "phone": "123-456-7890"}'>
+{#    <input type="hidden" name="owner" #}
+{#           value='{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "phone": "123-456-7890"}'>#}
+    <label for="owner">Owner:</label>
+    <input type="text" id="owner_first_name" name="owner_first_name" maxlength="100" placeholder="Enter owner first name" required><br>
+    <input type="text" id="owner_last_name" name="owner_last_name" maxlength="100" placeholder="Enter owner last name" required><br>
+    <input type="text" id="owner_email" name="owner_email" maxlength="100" placeholder="Enter owner email" required><br>
+    <input type="text" id="owner_phone" name="owner_phone" maxlength="100" placeholder="Enter owner phone" required><br>
+
 
     <label for="name">Property Name:</label>
     <input type="text" id="name" name="name" maxlength="100" placeholder="Enter property name" required><br>
@@ -40,10 +46,10 @@
     <input type="hidden" id="bedrooms" name="bedrooms" value="0">
  
     <label for="photo_main">Main Photo URL:</label>
-    <input type="url" id="photo_main" name="photo_main" placeholder="Enter main photo URL" required><br>
+    <input type="url" id="photo_main" name="photo_main" placeholder="Enter main photo URL"><br>
 
     <label for="photo">Another Photo URL:</label>
-    <input type="url" id="photo" name="photo" placeholder="Enter another photo URL"required><br>
+    <input type="url" id="photo" name="photo" placeholder="Enter another photo URL"><br>
 
     <button type="reset" style="background-color: red; color: white; border: none; padding: 10px 20px; cursor: pointer;">Clear</button>
     <button type="submit" style="background-color: green; color: white; border: none; padding: 10px 20px; cursor: pointer;">Submit</button> 

@@ -4,3 +4,4 @@ __pycache__
 *.pyc
 *.pyo
 *.sqlite3
+backend/*/migrations/*.py

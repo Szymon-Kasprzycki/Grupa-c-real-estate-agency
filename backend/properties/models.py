@@ -4,12 +4,11 @@ from django.urls import reverse
 
 
 class Property(models.Model):
-    TYPES = (
-        ('House', 'House'),
-        ('Flat', 'Flat'),
-        ('Apartment', 'Apartment'),
-        ('Studio', 'Studio')
-    )
+    class TYPES(models.TextChoices):
+        HOUSE = 'House'
+        FLAT = 'Flat'
+        APARTMENT = 'Apartment'
+        STUDIO = 'Studio'
     owner = models.JSONField()
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=5000)
@@ -17,12 +16,12 @@ class Property(models.Model):
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    bedrooms = models.PositiveIntegerField()
-    bathrooms = models.PositiveIntegerField()
-    garage = models.PositiveIntegerField()
+    bedrooms = models.PositiveIntegerField(blank=True, null=True)
+    bathrooms = models.PositiveIntegerField(blank=True, null=True)
+    garage = models.PositiveIntegerField(blank=True, null=True)
     sqft = models.PositiveIntegerField()
-    lot_size = models.DecimalField(max_digits=5, decimal_places=2)
-    photo_main = models.URLField()
+    lot_size = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    photo_main = models.URLField(blank=True)
 
     def __str__(self):
         return self.name
