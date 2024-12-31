@@ -1,9 +1,11 @@
 import os
+from pathlib import Path
 from subprocess import check_output, call
 from argparse import ArgumentParser
 
 FIND_COMMAND = 'where' if os.name == 'nt' else 'which'
-VENV_PATH = 'backend/.venv/Scripts' if os.name == 'nt' else 'backend/.venv/bin'
+BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
+VENV_PATH = BASE_DIR / 'backend' / '.venv' / 'Scripts' if os.name == 'nt' else 'BASE_DIR' / 'backend' / '.venv' / 'bin'
 
 for entry in ['py', 'python', 'python3']:
     if 'could not find' not in check_output([FIND_COMMAND, entry]).decode('utf-8').lower():
@@ -31,7 +33,7 @@ def main():
         rerun_db()
     elif args.run:
         if os.path.exists(VENV_PATH):
-            call([f'{VENV_PATH}/python', 'backend/manage.py', 'runserver'])
+            call([f'{VENV_PATH / "python"}', 'backend/manage.py', 'runserver'])
         else:
             raise Exception('Virtual environment not found!')
     elif args.rerun_db:
@@ -50,20 +52,31 @@ def check_dependencies():
 def prepare_venv():
     call([PYTHON_PATH, '-m', 'pip', 'install', 'virtualenv'])
     call([PYTHON_PATH, '-m', 'venv', '/'.join(list(VENV_PATH.split('/'))[:-1])])
-    call([f'{VENV_PATH}/pip', 'install', '-r', 'backend/requirements.dev.txt'])
+    call([f'{VENV_PATH / "pip"}', 'install', '-r', 'backend/requirements.dev.txt'])
     print('Virtual environment created and dependencies installed!')
 
 
 def run_server():
-    call([f'{VENV_PATH}/python', 'backend/manage.py', 'runserver'])
+    call([f'{VENV_PATH}\python', 'backend/manage.py', 'runserver'])
 
 
 def rerun_db():
-    if os.path.exists('backend/db.sqlite3'):
-        os.remove('backend/db.sqlite3')
-    call([f'{VENV_PATH}/python', 'backend/manage.py', 'makemigrations'])
-    call([f'{VENV_PATH}/python', 'backend/manage.py', 'migrate'])
-    call([f'{VENV_PATH}/python', 'backend/manage.py', 'createsuperuser', '--username', 'admin', '--email', 'admin@example.com', '--noinput'])
+    if os.path.exists(BASE_DIR / 'backend' / 'db.sqlite3'):
+        os.remove(BASE_DIR / 'backend' / 'db.sqlite3')
+
+    for entry in os.listdir(BASE_DIR / 'backend'):
+        print(f'Checking {BASE_DIR / "backend" / entry}...')
+        path = BASE_DIR / 'backend' / entry / 'migrations'
+        if os.path.exists(path):
+            print(f'Removing {path}...')
+            # if os.name == 'nt':
+                # call(['rmdir', '/s', '/q', path])
+            # else:
+                # call(['rm', '-rf', path])
+
+    call([f'{VENV_PATH / "python"}', 'backend/manage.py', 'makemigrations'])
+    call([f'{VENV_PATH / "python"}', 'backend/manage.py', 'migrate'])
+    call([f'{VENV_PATH / "python"}', 'backend/manage.py', 'createsuperuser', '--username', 'admin', '--email', 'admin@example.com', '--noinput'])
     print('Clean database recreated!')
 
 
