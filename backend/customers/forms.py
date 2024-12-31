@@ -1,7 +1,7 @@
 from django.forms import ModelForm
+from .models import Customer
 
-
-class CustomerForm(ModelForm):
+class CustomerRegisterForm(ModelForm):
     class Meta:
         model = Customer
-        fields = '__all__'
+        fields = ['first_name', 'last_name', 'gender', 'email', 'phone_number', 'address']
