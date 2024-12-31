@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
 from .forms import CustomerRegisterForm
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -58,4 +60,11 @@ def register_page(request):
         form = CustomerRegisterForm()
     
     return render(request, 'register.html', {'form': form})
+
+def logout_view(request):
+    logout(request, 'login.html')
+
+@login_required(login_url='/customers/login/')
+def customer_info(request):
+    return render(request, 'customer_info.html')
 
