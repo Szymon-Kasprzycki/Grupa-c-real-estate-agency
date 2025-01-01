@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from .forms import CustomerRegisterForm
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from .models import Customer
 
 
 def home(request):
@@ -61,10 +62,44 @@ def register_page(request):
     
     return render(request, 'register.html', {'form': form})
 
-def logout_view(request):
-    logout(request, 'login.html')
+def UserLoggedIn(request):
+    if request.user.is_authenticated == True:
+        username = request.user.username
+    else:
+        username = None
+    return username
 
-@login_required(login_url='/customers/login/')
+def logout_view(request):
+    username = UserLoggedIn(request)
+    if username != None:
+        logout(request)
+        return redirect('/customers/login/')
+
 def customer_info(request):
-    return render(request, 'customer_info.html')
+    if request.user.is_authenticated:
+        customer = Customer.objects.get(user=request.user)
+        customer_personal_info = {
+            'first_name': customer.get_first_name(),
+            'last_name': customer.get_last_name(),
+            'gender': customer.get_gender(),
+            'email': customer.get_email(),
+            'phone_number': customer.get_phone_number(),
+            'address': customer.get_address(),
+            'preferences': customer.get_preferences(),
+            'created_at': customer.get_created_at(),
+            'updated_at': customer.get_updated_at()
+        }
+        context = {
+            'customer_personal_info': customer_personal_info
+        }
+        return render(request, 'customer_info.html', context)
+    else:
+        return render(request, 'login.html')
+
+# def update_customer_info(request):
+#     if request.user.is_authenticated:
+#         customer = Customer.objects.get(user=request.user)
+#         customer_personal_info = {
+#             'first_name': customer.get_first_name(),
+#             'last_name': customer.get_last_name(),
 

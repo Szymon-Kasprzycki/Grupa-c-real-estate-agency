@@ -29,3 +29,31 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.first_name
+    
+    def get_first_name(self):
+        return self.first_name
+    
+    def get_last_name(self):
+        return self.last_name
+    
+    def get_gender(self):
+        return self.gender
+    
+    def get_email(self):
+        return self.email
+    
+    def get_phone_number(self):
+        return self.phone_number
+    
+    def get_address(self):
+        return self.address
+    
+    def get_preferences(self):
+        return self.preferences
+    
+    def get_created_at(self):
+        return self.created_at
+    
+    def get_updated_at(self):
+        return self.updated_at
+    

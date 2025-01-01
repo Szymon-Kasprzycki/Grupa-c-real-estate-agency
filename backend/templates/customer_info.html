@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>Customer personal information</title>
+</head>
+<body>
+    <h1>Customer personal information</h1>
+    {% if user.is_authenticated %}
+    First name: {{ customer_personal_info.first_name }}<br>
+    Last name: {{ customer_personal_info.last_name }}<br>
+    Gender: {{ customer_personal_info.gender }}<br>
+    Email: {{ customer_personal_info.email }}<br>
+    Phone number: {{ customer_personal_info.phone_number }}<br>
+    Address: {{ customer_personal_info.address }}<br>
+    Preferences: {{ customer_personal_info.preferences }}<br>
+    Created at: {{ customer_personal_info.created_at }}<br>
+    Updated at: {{ customer_personal_info.updated_at }}<br>
+
+    {% csrf_token %}
+    </form>
+    {% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login_page' %}">Log In</a>
+    {% endif %}
+    
+    <a href="{% url 'home_page' %}" class="button">Go to Home Page</a>
+</body>
+</html>
