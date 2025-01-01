@@ -5,6 +5,7 @@
 <body>
     <h1>Customer personal information</h1>
     {% if user.is_authenticated %}
+    Username: {{ user.username }}<br>
     First name: {{ customer_personal_info.first_name }}<br>
     Last name: {{ customer_personal_info.last_name }}<br>
     Gender: {{ customer_personal_info.gender }}<br>
@@ -21,7 +22,7 @@
     <p>You are not logged in</p>
     <a href="{% url 'login_page' %}">Log In</a>
     {% endif %}
-    
+    <a href="{% url 'update_customer_info' %}" class="button">Update personal information</a>
     <a href="{% url 'home_page' %}" class="button">Go to Home Page</a>
 </body>
 </html>

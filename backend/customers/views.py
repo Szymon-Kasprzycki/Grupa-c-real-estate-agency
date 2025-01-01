@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
-from .forms import CustomerRegisterForm
+from .forms import CustomerRegisterForm, CustomerUpdateInfoForm
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .models import Customer
@@ -75,10 +75,12 @@ def logout_view(request):
         logout(request)
         return redirect('/customers/login/')
 
+@login_required
 def customer_info(request):
     if request.user.is_authenticated:
         customer = Customer.objects.get(user=request.user)
         customer_personal_info = {
+            'username': request.user.username,
             'first_name': customer.get_first_name(),
             'last_name': customer.get_last_name(),
             'gender': customer.get_gender(),
@@ -95,11 +97,22 @@ def customer_info(request):
         return render(request, 'customer_info.html', context)
     else:
         return render(request, 'login.html')
-
-# def update_customer_info(request):
-#     if request.user.is_authenticated:
-#         customer = Customer.objects.get(user=request.user)
-#         customer_personal_info = {
-#             'first_name': customer.get_first_name(),
-#             'last_name': customer.get_last_name(),
-
+    
+@login_required
+def update_customer_info(request):
+    if request.method == 'POST':
+        customer = Customer.objects.get(user=request.user)
+        password = request.POST.get('password')
+        form = CustomerUpdateInfoForm(request.POST)
+        if form.is_valid():
+            if password:
+                request.user.set_password(password)
+                request.user.save()
+            for field, value in form.cleaned_data.items():
+                if value:
+                    setattr(customer, field, value)
+            customer.save()
+            return redirect('/customers/info/')
+    else:
+        form = CustomerUpdateInfoForm()
+    return render(request, 'update_customer_info.html', {'form': form})

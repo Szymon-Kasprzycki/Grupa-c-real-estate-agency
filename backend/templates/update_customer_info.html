@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>Update personal information</title>
+</head>
+<body>
+    <h1>Update personal information</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+
+        {{ form.as_p }}
+
+        <button type="submit">Update information</button>
+    </form>
+    <a href="{% url 'customer_info' %}" class="button">Go to personal information</a>
+</body>
+</html>
