@@ -12,42 +12,43 @@ from .models import Customer
 def home(request):
     return render(request, 'home.html')
 
+
 def login_page(request):
+    if request.user.is_authenticated:
+        messages.info(request, "You are already logged in.")
+        return redirect(to='home_page')
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
         
         if not User.objects.filter(username=username).exists():
             messages.error(request, 'Invalid Username')
-            return redirect('/customers/login/')
+            return redirect(to='login_page')
         
         user = authenticate(username=username, password=password)
         
         if user is None:
             messages.error(request, "Invalid Password")
-            return redirect('/customers/login/')
+            return redirect(to='login_page')
         else:
             login(request, user)
-            return redirect('/customers/home/')
+            return redirect(to='home_page')
     
     return render(request, 'login.html')
 
+
 def register_page(request):
     if request.method == 'POST':
-
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
         form = CustomerRegisterForm(request.POST)
         if form.is_valid():
-
+            username = request.POST.get('username')
+            password = request.POST.get('password')
             user = User.objects.filter(username=username)
             if user.exists():
                 messages.info(request, "Username already in use.")
-                return redirect('/customers/register/')
+                return redirect(to='register_page')
 
-            user = User.objects.create_user(username=username)
-            user.set_password(password)
+            user = User.objects.create_user(username=username, password=password)
             user.save()
 
             customer = form.save(commit=False)
@@ -56,24 +57,20 @@ def register_page(request):
             customer.save()
             
             messages.info(request, "Account created Successfully.")
-            return redirect('/customers/home/')
+            return redirect(to='home_page')
     else:
         form = CustomerRegisterForm()
     
     return render(request, 'register.html', {'form': form})
 
-def UserLoggedIn(request):
-    if request.user.is_authenticated == True:
-        username = request.user.username
-    else:
-        username = None
-    return username
 
+@login_required
 def logout_view(request):
-    username = UserLoggedIn(request)
-    if username != None:
+    if request.user.is_authenticated:
         logout(request)
-        return redirect('/customers/login/')
+    messages.info(request, "Logged out successfully.")
+    return redirect(to='login_page')
+
 
 @login_required
 def customer_info(request):
@@ -81,38 +78,38 @@ def customer_info(request):
         customer = Customer.objects.get(user=request.user)
         customer_personal_info = {
             'username': request.user.username,
-            'first_name': customer.get_first_name(),
-            'last_name': customer.get_last_name(),
-            'gender': customer.get_gender(),
-            'email': customer.get_email(),
-            'phone_number': customer.get_phone_number(),
-            'address': customer.get_address(),
-            'preferences': customer.get_preferences(),
-            'created_at': customer.get_created_at(),
-            'updated_at': customer.get_updated_at()
+            'first_name': customer.first_name,
+            'last_name': customer.last_name,
+            'gender': customer.gender,
+            'email': customer.email,
+            'phone_number': customer.phone_number,
+            'address': customer.address,
+            'preferences': customer.preferences,
+            'created_at': customer.created_at,
+            'updated_at': customer.updated_at
         }
         context = {
             'customer_personal_info': customer_personal_info
         }
         return render(request, 'customer_info.html', context)
     else:
+
         return render(request, 'login.html')
-    
+
+
 @login_required
 def update_customer_info(request):
     if request.method == 'POST':
-        customer = Customer.objects.get(user=request.user)
-        password = request.POST.get('password')
         form = CustomerUpdateInfoForm(request.POST)
         if form.is_valid():
-            if password:
-                request.user.set_password(password)
-                request.user.save()
+            customer = Customer.objects.get(user=request.user)
             for field, value in form.cleaned_data.items():
+                print(field, value)
                 if value:
                     setattr(customer, field, value)
             customer.save()
-            return redirect('/customers/info/')
+            messages.info(request, "Account updated successfully.")
+            return redirect(to='customer_info')
     else:
         form = CustomerUpdateInfoForm()
     return render(request, 'update_customer_info.html', {'form': form})

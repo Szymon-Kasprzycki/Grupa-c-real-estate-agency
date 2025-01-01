@@ -3,24 +3,24 @@
     <title>Customer personal information</title>
 </head>
 <body>
-    <h1>Customer personal information</h1>
+    <header>
+        {% include 'base.html' %}
+        <h1>Customer personal information</h1>
+    </header>
     {% if user.is_authenticated %}
-    Username: {{ user.username }}<br>
-    First name: {{ customer_personal_info.first_name }}<br>
-    Last name: {{ customer_personal_info.last_name }}<br>
-    Gender: {{ customer_personal_info.gender }}<br>
-    Email: {{ customer_personal_info.email }}<br>
-    Phone number: {{ customer_personal_info.phone_number }}<br>
-    Address: {{ customer_personal_info.address }}<br>
-    Preferences: {{ customer_personal_info.preferences }}<br>
-    Created at: {{ customer_personal_info.created_at }}<br>
-    Updated at: {{ customer_personal_info.updated_at }}<br>
-
-    {% csrf_token %}
-    </form>
+        <p>Username: {{ user.username }}</p>
+        <p>First name: {{ customer_personal_info.first_name }}</p>
+        <p>Last name: {{ customer_personal_info.last_name }}</p>
+        <p>Gender: {{ customer_personal_info.gender }}</p>
+        <p>Email: {{ customer_personal_info.email }}</p>
+        <p>Phone number: {{ customer_personal_info.phone_number }}</p>
+        <p>Address: {{ customer_personal_info.address }}</p>
+        <p>Preferences: {{ customer_personal_info.preferences }}</p>
+        <p>Created at: {{ customer_personal_info.created_at }}</p>
+        <p>Updated at: {{ customer_personal_info.updated_at }}</p>
     {% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login_page' %}">Log In</a>
+        <p>You are not logged in</p>
+        <a href="{% url 'login_page' %}">Log In</a>
     {% endif %}
     <a href="{% url 'update_customer_info' %}" class="button">Update personal information</a>
     <a href="{% url 'home_page' %}" class="button">Go to Home Page</a>
