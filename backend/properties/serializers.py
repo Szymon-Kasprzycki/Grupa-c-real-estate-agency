@@ -57,9 +57,30 @@ class PropertySerializer(serializers.ModelSerializer):
         return data
 
     def validate(self, data):
-        # TODO here should be the validation logic
         if data['type'] and data["type"] not in Property.TYPES:
             raise serializers.ValidationError("Invalid property type")
+
+        if data['price'] < 0:
+            raise serializers.ValidationError("Price must be a positive number")
+
+        if data['sqft'] < 0:
+            raise serializers.ValidationError("Square footage must be a positive number")
+
+        if 'lot_size' in data and data['lot_size'] < 0:
+            raise serializers.ValidationError("Lot size must be a positive number")
+
+        if 'bedrooms' in data and data['bedrooms'] < 0:
+            raise serializers.ValidationError("Number of bedrooms must be a positive number")
+
+        if 'bathrooms' in data and data['bathrooms'] < 0:
+            raise serializers.ValidationError("Number of bathrooms must be a positive number")
+
+        if 'garage' in data and data['garage'] < 0:
+            raise serializers.ValidationError("Number of garages must be a positive number")
+
+        if 'owner_phone' in data and not data['owner_phone'].isdigit():
+            raise serializers.ValidationError("Phone number must contain only numbers")
+
         return data
 
     def create(self, validated_data):

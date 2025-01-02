@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
@@ -15,12 +17,12 @@ class Property(models.Model):
     type = models.CharField(choices=TYPES, max_length=100)
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    bedrooms = models.PositiveIntegerField(blank=True, null=True)
-    bathrooms = models.PositiveIntegerField(blank=True, null=True)
-    garage = models.PositiveIntegerField(blank=True, null=True)
-    sqft = models.PositiveIntegerField()
-    lot_size = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal(0))])
+    bedrooms = models.PositiveIntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
+    bathrooms = models.PositiveIntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
+    garage = models.PositiveIntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
+    sqft = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    lot_size = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, validators=[MinValueValidator(Decimal(0))])
     photo_main = models.URLField(blank=True)
 
     def __str__(self):
