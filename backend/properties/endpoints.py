@@ -14,4 +14,4 @@ def create_property(request):
         else:
             return HttpResponse(status=400, content=str(dict(message='error', errors=property_form.errors)))
     else:
-        return render(request, '404.html')
+        return render(request, 'base_property_form.html')

@@ -4,14 +4,11 @@
     {% csrf_token %}
     <h2>Add new property listing</h2>
 
-{#    <input type="hidden" name="owner" #}
-{#           value='{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "phone": "123-456-7890"}'>#}
     <label for="owner">Owner:</label>
     <input type="text" id="owner_first_name" name="owner_first_name" maxlength="100" placeholder="Enter owner first name" required><br>
     <input type="text" id="owner_last_name" name="owner_last_name" maxlength="100" placeholder="Enter owner last name" required><br>
     <input type="text" id="owner_email" name="owner_email" maxlength="100" placeholder="Enter owner email" required><br>
     <input type="text" id="owner_phone" name="owner_phone" maxlength="100" placeholder="Enter owner phone" required><br>
-
 
     <label for="name">Property Name:</label>
     <input type="text" id="name" name="name" maxlength="100" placeholder="Enter property name" required><br>
@@ -35,18 +32,13 @@
     <input type="text" id="country" name="country" maxlength="100" placeholder="Enter country" required><br>
 
     <label for="price">Price (USD):</label>
-    <input type="number" id="price" name="price" step="0.01" min="1" placeholder="Enter price" required><br>
+    <input type="number" id="price" name="price" step="1" min="1" placeholder="Enter price" required><br>
 
     <label for="sqft">Square Footage:</label>
-    <input type="number" id="sqft" name="sqft" step="0.01" min="1" placeholder="Enter square footage" required><br>
+    <input type="number" id="sqft" name="sqft" step="0.1" min="1" placeholder="Enter square footage" required><br>
 
-    <div id="dynamic-fields">
-    </div>
+    <div id="dynamic-fields"></div>
 
-    <input type="hidden" id="garage" name="garage" value="0">
-    <input type="hidden" id="lot_size" name="lot_size" value="0">
-    <input type="hidden" id="bedrooms" name="bedrooms" value="0">
- 
     <label for="photo_main">Main Photo URL:</label>
     <input type="url" id="photo_main" name="photo_main" placeholder="Enter main photo URL"><br>
 
@@ -54,16 +46,13 @@
     <input type="url" id="photo" name="photo" placeholder="Enter another photo URL"><br>
 
     <button type="reset" style="background-color: red; color: white; border: none; padding: 10px 20px; cursor: pointer;">Clear</button>
-    <button type="submit" style="background-color: green; color: white; border: none; padding: 10px 20px; cursor: pointer;">Submit</button> 
+    <button type="submit" style="background-color: green; color: white; border: none; padding: 10px 20px; cursor: pointer;">Submit</button>
 </form>
 
 <script>
     function showFields(propertyType) {
         const dynamicFields = document.getElementById('dynamic-fields');
         dynamicFields.innerHTML = '';
-        document.getElementById('garage').value = 0;
-        document.getElementById('lot_size').value = 0;
-        document.getElementById('bedrooms').value = 0;
 
         if (propertyType === 'House') {
             dynamicFields.innerHTML = `
