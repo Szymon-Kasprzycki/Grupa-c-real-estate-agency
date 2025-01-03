@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>Update personal information</title>
+</head>
+<body>
+    <header>
+        {% include 'base.html' %}
+        <h1>Update Personal Information</h1>
+    </header>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update information</button>
+    </form>
+    <a href="{% url 'customer_info' %}" class="button">Go to personal information</a>
+</body>
+</html>

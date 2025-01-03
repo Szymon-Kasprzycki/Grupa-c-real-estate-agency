@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-x=k8#=yqu!r!s2#a2!e!id2(bc2@on_7x93t%8-6$*%myvlqvr
 DEBUG = True
 
 ALLOWED_HOSTS = []
+APPEND_SLASH = True
 
 
 # Application definition
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'properties',
+    'customers',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +126,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# auto render 404 page from templates
+handler404 = 'backend.views.handler404'

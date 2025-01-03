@@ -1,0 +1,79 @@
+{% include 'base.html' %}
+
+<form method="POST" action="{% url 'create_property' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Add new property listing</h2>
+
+    <label for="owner">Owner:</label>
+    <input type="text" id="owner_first_name" name="owner_first_name" maxlength="100" placeholder="Enter owner first name" required><br>
+    <input type="text" id="owner_last_name" name="owner_last_name" maxlength="100" placeholder="Enter owner last name" required><br>
+    <input type="text" id="owner_email" name="owner_email" maxlength="100" placeholder="Enter owner email" required><br>
+    <input type="text" id="owner_phone" name="owner_phone" maxlength="100" placeholder="Enter owner phone" required><br>
+
+    <label for="name">Property Name:</label>
+    <input type="text" id="name" name="name" maxlength="100" placeholder="Enter property name" required><br>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" maxlength="5000" placeholder="Enter property description" required></textarea><br>
+
+    <label for="type">Property Type:</label>
+    <select id="type" name="type" required onchange="showFields(this.value)">
+        <option value="">Select Type</option>
+        <option value="House">House</option>
+        <option value="Flat">Flat</option>
+        <option value="Apartment">Apartment</option>
+        <option value="Studio">Studio</option>
+    </select><br>
+
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" maxlength="100" placeholder="Enter city" required><br>
+
+    <label for="country">Country:</label>
+    <input type="text" id="country" name="country" maxlength="100" placeholder="Enter country" required><br>
+
+    <label for="price">Price (USD):</label>
+    <input type="number" id="price" name="price" step="1" min="1" placeholder="Enter price" required><br>
+
+    <label for="sqft">Square Footage:</label>
+    <input type="number" id="sqft" name="sqft" step="0.1" min="1" placeholder="Enter square footage" required><br>
+
+    <div id="dynamic-fields"></div>
+
+    <label for="photo_main">Main Photo URL:</label>
+    <input type="url" id="photo_main" name="photo_main" placeholder="Enter main photo URL"><br>
+
+    <label for="photo">Another Photo URL:</label>
+    <input type="url" id="photo" name="photo" placeholder="Enter another photo URL"><br>
+
+    <button type="reset" style="background-color: red; color: white; border: none; padding: 10px 20px; cursor: pointer;">Clear</button>
+    <button type="submit" style="background-color: green; color: white; border: none; padding: 10px 20px; cursor: pointer;">Submit</button>
+</form>
+
+<script>
+    function showFields(propertyType) {
+        const dynamicFields = document.getElementById('dynamic-fields');
+        dynamicFields.innerHTML = '';
+
+        if (propertyType === 'House') {
+            dynamicFields.innerHTML = `
+                <label for="bedrooms">Bedrooms:</label>
+                <input type="number" id="bedrooms" name="bedrooms" min="1" placeholder="Enter number of bedrooms" required><br>
+                <label for="bathrooms">Bathrooms:</label>
+                <input type="number" id="bathrooms" name="bathrooms" min="1" placeholder="Enter number of bathrooms" required><br>
+                <label for="garage">Garage Spaces:</label>
+                <input type="number" id="garage" name="garage" min="0" placeholder="Enter number of garage spaces" required><br>
+                <label for="lot_size">Lot Size (acres):</label>
+                <input type="number" id="lot_size" name="lot_size" step="0.01" min="1" placeholder="Enter lot size" required><br>`;
+        } else if (propertyType === 'Flat' || propertyType === 'Apartment') {
+            dynamicFields.innerHTML = `
+                <label for="bedrooms">Bedrooms:</label>
+                <input type="number" id="bedrooms" name="bedrooms" min="1" placeholder="Enter number of bedrooms" required><br>
+                <label for="bathrooms">Bathrooms:</label>
+                <input type="number" id="bathrooms" name="bathrooms" min="1" placeholder="Enter number of bathrooms" required><br>`;
+        } else if (propertyType === 'Studio') {
+            dynamicFields.innerHTML = `
+                <label for="bathrooms">Bathrooms:</label>
+                <input type="number" id="bathrooms" name="bathrooms" min="1" placeholder="Enter number of bathrooms" required><br>`;
+        }
+    }
+</script>

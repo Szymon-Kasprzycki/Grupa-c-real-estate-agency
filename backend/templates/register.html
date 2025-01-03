@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <header>
+        {% include 'base.html' %}
+        <h1>Register Page</h1>
+    </header>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        {{ form.as_p }}
+
+        <button type="submit">Register</button>
+    </form>
+    <a href="{% url 'home_page' %}" class="button">Go to Home Page</a>
+    <a href="{% url 'login_page' %}" class="button">Go to Login Page</a>
+</body>
+</html>

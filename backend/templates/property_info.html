@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>Property Info</title>
+</head>
+
+<body>
+{% include 'base.html' %}
+
+<h1>Property Info</h1>
+
+<h2>{{ property.name }}</h2>
+
+{% if property.photo_main %}
+    <img src="{{ property.photo_main }}" alt="{{ property.name }}" style="width: 100%;">
+{% endif %}
+
+{% if property.photo %}
+    <img src="{{ property.photo }}" alt="{{ property.name }}" style="width: 100%;">
+{% endif %}
+
+<p>{{ property.description }}</p>
+<br/>
+<p>Owner: {{ property.owner.first_name }} {{ property.owner.last_name }}, {{ property.owner.phone }}, {{ property.owner.email }}</p>
+<p>City: {{ property.city }}</p>
+<p>Country: {{ property.country }}</p>
+<p>Price: ${{ property.price }}</p>
+<p>Square Footage: {{ property.sqft }} sqft</p>
+<p>Property Type: {{ property.type }}</p>
+{% if property.bedrooms %}
+    <p>Bedrooms: {{ property.bedrooms }}</p>
+{% endif %}
+{% if property.bathrooms %}
+    <p>Bathrooms: {{ property.bathrooms }}</p>
+{% endif %}
+{% if property.garage %}
+    <p>Garage Spaces: {{ property.garage }}</p>
+{% endif %}
+
+
+</body>
+</html>
