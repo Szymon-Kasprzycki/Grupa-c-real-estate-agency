@@ -23,7 +23,7 @@ def get_property(request, pk):
         try:
             property_obj = Property.objects.get(pk=pk)
             property_deserializer = EntityPropertyDeserializer(property_obj)
-            return HttpResponse(status=200, content=str(dict(message='success', property=property_deserializer.data)))
+            return render(request, 'property_info.html', {'property': property_deserializer.data})
         except Property.DoesNotExist:
             return HttpResponse(status=404, content=str(dict(message='error', errors='Property not found')))
     else:

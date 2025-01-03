@@ -173,4 +173,6 @@ class EntityPropertyDeserializer(serializers.ModelSerializer):
         for field in data.keys():
             if data.get(field) is None:
                 data[field] = ''
+
+        data['owner'] = json.loads(data['owner'])
         return data
