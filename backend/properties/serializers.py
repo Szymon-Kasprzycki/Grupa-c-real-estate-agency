@@ -133,3 +133,44 @@ class PropertyImageSerializer(serializers.ModelSerializer):
         instance.photo = validated_data.get('photo', instance.photo)
         instance.save()
         return instance
+
+
+class ForListPropertyDeserializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(max_length=100)
+    description = serializers.CharField(max_length=5000)
+    type = serializers.CharField(max_length=100)
+    owner = serializers.JSONField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Property
+        fields = ['id', 'name', 'description', 'type', 'owner', 'created_at', 'updated_at']
+
+
+class EntityPropertyDeserializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(max_length=100, read_only=True)
+    description = serializers.CharField(max_length=5000, read_only=True)
+    type = serializers.CharField(max_length=100, read_only=True)
+    owner = serializers.JSONField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+    bedrooms = serializers.IntegerField(read_only=True, required=False)
+    bathrooms = serializers.IntegerField(read_only=True, required=False)
+    garage = serializers.IntegerField(read_only=True, required=False)
+    sqft = serializers.IntegerField(read_only=True, required=False)
+    lot_size = serializers.DecimalField(read_only=True, required=False, max_digits=5, decimal_places=2)
+    photo_main = serializers.URLField(read_only=True, required=False)
+
+    class Meta:
+        model = Property
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        for field in data.keys():
+            if data.get(field) is None:
+                data[field] = ''
+        return data
