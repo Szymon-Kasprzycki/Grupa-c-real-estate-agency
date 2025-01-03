@@ -3,7 +3,11 @@
     <title>Login</title>
 </head>
 <body>
-    <h1>Login Page</h1>
+    <header>
+        {% include 'base.html' %}
+        <h1>Login Page</h1>
+    </header>
+
     <form method="post">
         {% csrf_token %}
 
@@ -15,5 +19,7 @@
         
         <button type="submit">Login</button>
     </form>
+    <a href="{% url 'home_page' %}" class="button">Go to Home Page</a>
+    <a href="{% url 'register_page' %}" class="button">Go to Register Page</a>
 </body>
 </html>

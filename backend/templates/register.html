@@ -3,7 +3,10 @@
     <title>Register</title>
 </head>
 <body>
-    <h1>Register Page</h1>
+    <header>
+        {% include 'base.html' %}
+        <h1>Register Page</h1>
+    </header>
     <form method="post">
         {% csrf_token %}
 
@@ -17,5 +20,7 @@
 
         <button type="submit">Register</button>
     </form>
+    <a href="{% url 'home_page' %}" class="button">Go to Home Page</a>
+    <a href="{% url 'login_page' %}" class="button">Go to Login Page</a>
 </body>
 </html>
